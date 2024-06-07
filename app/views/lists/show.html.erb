@@ -1,2 +1,23 @@
-<h1>List#show</h1>
-<h2><%= @list.name %></h2>
+<div class="container py-4">
+  <h2 class="bg-primary text-white rounded-pill px-4 py-2 mb-4">Liste : <%= @list.name %></h2>
+
+  <% @list.bookmarks.each do |bookmark| %>
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title"><%= bookmark.movie.title %></h5>
+        <p class="card-text"><%= bookmark.comment %></p>
+        <%= link_to "Supprimer ce commentaire", bookmark_path(bookmark), data: {turbo_method: :delete}, class: "btn btn-danger btn-sm" %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- lists/:id/bookmarks -->
+  <!-- /bookmarks -->
+  <%= simple_form_for [@list, @bookmark] do |f| %>
+    <%= f.input :comment, input_html: { class: "form-control" } %>
+    <%= f.input :movie_id, collection: Movie.all, input_html: { class: "form-control" } %>
+    <%= f.button :submit, class: "btn btn-primary" %>
+  <% end %>
+
+  <%= link_to "Toutes les listes", lists_path, class: "btn btn-secondary btn-sm mt-4" %>
+</div>
